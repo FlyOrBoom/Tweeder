@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang=en-US dir=ltr>
+<head>
+	<meta charset=utf-8>
+
+	<title>Home / Tweeder</title>
+	<meta name=description content=''>
+	<meta name=author content='Xing Liu'>
+	<meta name=viewport content='width=device-width, initial-scale=1.0'>
+	<meta name=color-scheme content='light dark'>
+
+<style>
+html, body {
+	font-family: Helvetica, sans-serif;
+	margin: 0;
+	font-size: 16px;
+}
+main {
+	max-width: 64ch;
+	border-width: 0 1px 0 1px;
+	border-style: solid;
+	border-color: #ddd;
+	margin: 0 auto;
+}
+main > * {
+	border-bottom: 1px solid #ddd;
+	padding: 1rem;
+	margin: 0;
+}
+.picture {
+	padding-bottom: 60%;
+	background-color: grey;
+	border-radius: 1rem;
+}
+</style>
+</head>
+<body>
+
+<main id=main>
+	<h1>
+		Home
+	</h1>
+</main>
+
+<template id=tweed>
+	<article>
+		<div class=profile-picture></div>
+		<p>
+			<span class=user></span>
+			<span class=handle>@</span>
+			<span class=time></span>
+		</p>
+		<p class=text></p>
+		<div class=picture></div>
+	</article>
+</template>
+
+<script>
+const to_list = x => x.split('\n').slice(1,-1)
+const random = a => a[Math.floor(Math.random() * a.length)]
+
+const adjectives =	
+to_list(`
+odd
+boring
+mildly funny
+frustrated
+communist
+fascist
+obscure
+awkward
+relatable
+racist
+fake
+popular
+misleading
+old
+out-of-touch
+sad
+awful
+offensive
+`)
+
+const objects = 
+to_list(`
+comic
+drawing
+photo
+song
+thing another country did
+ad
+blog post
+paywalled paper
+reddit comment
+screenshot of another social media
+billionaire
+millionaire
+rich dude
+teenager
+rant 
+opinion 
+pun 
+`)
+
+const $ = (x, e = document) => e.querySelector(x)
+const main = $('#main')
+const template = $('#tweed')
+const tweeds_per_load = 4
+const tweed = () => {
+	const e = template.content.cloneNode(true).firstElementChild
+	const text = `Some ${random(adjectives)} ${random(objects)}`
+	if(text.endsWith(' ')) $('.picture',e).hidden = true
+	$('.text',e).textContent = text
+	return e
+}
+const load = () => {
+	const tweeds = new Array(tweeds_per_load).fill(0).map(tweed)
+	main.append(...tweeds)
+}
+load()
+</script>
+</body>
+</html>
